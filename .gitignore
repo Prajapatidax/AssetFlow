@@ -1,0 +1,72 @@
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.venv
+venv/
+ENV/
+env/
+ENV/pyvenv.cfg
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# JavaScript / Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dist/
+dist-ssr/
+*.local
+.eslintcache
+.stylelintcache
+.vite-inspect
+.next/
+out/
+.nuxt/
+.output/
+
+# IDEs & System
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+
+# Environment Variables
+.env
+.env*.local
+
+# Celery & Redis (if any dump files)
+*.rdb
+
+# App Data or Agent Scratch Directory
+.agents/
+scratch/
+.gemini/
