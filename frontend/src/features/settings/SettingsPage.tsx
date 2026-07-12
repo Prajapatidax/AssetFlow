@@ -1,11 +1,30 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { Save, User, Bell, Shield, Laptop, Check, X, AlertCircle } from 'lucide-react';
+import { Save, User, Bell, Shield, Laptop, Check, X, AlertCircle, Key, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+import adminCapabilities from './capabilities/admin.json';
+import assetManagerCapabilities from './capabilities/asset_manager.json';
+import departmentHeadCapabilities from './capabilities/department_head.json';
+import employeeCapabilities from './capabilities/employee.json';
 
 export const SettingsPage: React.FC = () => {
   const { user, updateUser } = useAuth();
-  const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'security'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'security' | 'capabilities'>('profile');
+
+  const getCapabilitiesForRole = (role: string) => {
+    switch (role) {
+      case 'ADMIN':
+        return adminCapabilities;
+      case 'ASSET_MANAGER':
+        return assetManagerCapabilities;
+      case 'DEPARTMENT_HEAD':
+        return departmentHeadCapabilities;
+      case 'EMPLOYEE':
+      default:
+        return employeeCapabilities;
+    }
+  };
   
   // Success Alert State
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -106,6 +125,17 @@ export const SettingsPage: React.FC = () => {
             }`}
           >
             <Shield className="h-4 w-4" /> Security Settings
+          </button>
+
+          <button 
+            onClick={() => setActiveTab('capabilities')}
+            className={`w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2.5 ${
+              activeTab === 'capabilities' 
+                ? 'bg-primary text-primary-foreground shadow-sm shadow-primary/20' 
+                : 'text-muted-foreground hover:bg-secondary/60 hover:text-foreground'
+            }`}
+          >
+            <Key className="h-4 w-4" /> My Capabilities
           </button>
         </div>
 
@@ -293,6 +323,29 @@ export const SettingsPage: React.FC = () => {
                     </button>
                   </div>
                 </form>
+              </motion.div>
+            )}
+
+            {activeTab === 'capabilities' && (
+              <motion.div
+                key="capabilities"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.15 }}
+                className="space-y-4 text-xs"
+              >
+                <h2 className="text-sm font-bold text-foreground">My Role Capabilities</h2>
+                <p className="text-[11px] text-muted-foreground font-medium">Below are the authorized operations associated with your current clearance level (<strong className="text-primary font-bold uppercase">{user?.role?.replace('_', ' ')}</strong>).</p>
+
+                <div className="space-y-2 pt-2">
+                  {getCapabilitiesForRole(user?.role || '').map((cap, index) => (
+                    <div key={index} className="flex items-center gap-2.5 p-3 bg-secondary/35 rounded-lg border border-border/50 font-semibold text-foreground">
+                      <ShieldCheck className="h-4.5 w-4.5 text-primary shrink-0" />
+                      <span>{cap}</span>
+                    </div>
+                  ))}
+                </div>
               </motion.div>
             )}
           </AnimatePresence>

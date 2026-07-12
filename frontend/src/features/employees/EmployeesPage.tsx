@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Users2, Plus, Mail, ShieldAlert, X, Trash2, Shield, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
+import { useAuth } from '../../contexts/AuthContext';
 interface EmployeeDemo {
   id: string;
   name: string;
@@ -18,6 +18,7 @@ const INITIAL_EMPLOYEES: EmployeeDemo[] = [
 ];
 
 export const EmployeesPage: React.FC = () => {
+  const { user } = useAuth();
   const [employees, setEmployees] = useState<EmployeeDemo[]>(INITIAL_EMPLOYEES);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -79,12 +80,14 @@ export const EmployeesPage: React.FC = () => {
           <h1 className="text-xl font-extrabold tracking-tight text-foreground">Employee Directory</h1>
           <p className="text-xs text-muted-foreground mt-0.5">Manage personnel records, departments, and role-based clearance permissions.</p>
         </div>
-        <button 
-          onClick={() => setIsAddModalOpen(true)}
-          className="px-3.5 py-2 bg-primary hover:bg-primary-hover text-primary-foreground font-bold rounded-lg text-xs transition-all shadow-sm flex items-center gap-1.5 self-start md:self-auto"
-        >
-          <Plus className="h-4 w-4" /> Add Employee
-        </button>
+        {user?.role === 'ADMIN' && (
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="px-3.5 py-2 bg-primary hover:bg-primary-hover text-primary-foreground font-bold rounded-lg text-xs transition-all shadow-sm flex items-center gap-1.5 self-start md:self-auto"
+          >
+            <Plus className="h-4 w-4" /> Add Employee
+          </button>
+        )}
       </div>
 
       {/* Directory Table Grid */}
@@ -119,13 +122,15 @@ export const EmployeesPage: React.FC = () => {
                   </span>
                 </td>
                 <td className="py-3.5 px-6 text-right">
-                  <button 
-                    onClick={() => handleDeleteEmployee(emp.id)}
-                    className="p-1 hover:bg-red-50 dark:hover:bg-red-950/20 rounded text-muted-foreground hover:text-red-500 transition-colors"
-                    title="Remove Employee"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
+                  {user?.role === 'ADMIN' && (
+                    <button 
+                      onClick={() => handleDeleteEmployee(emp.id)}
+                      className="p-1 hover:bg-red-50 dark:hover:bg-red-950/20 rounded text-muted-foreground hover:text-red-500 transition-colors"
+                      title="Remove Employee"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ClipboardCheck, Plus, CheckCircle, ArrowRight, X, Trash2, Calendar, Target, Award } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface AuditDemo {
   id: string;
@@ -16,6 +17,7 @@ const INITIAL_AUDITS: AuditDemo[] = [
 ];
 
 export const AuditsPage: React.FC = () => {
+  const { user } = useAuth();
   const [audits, setAudits] = useState<AuditDemo[]>(INITIAL_AUDITS);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -65,12 +67,14 @@ export const AuditsPage: React.FC = () => {
           <h1 className="text-xl font-extrabold tracking-tight text-foreground">Compliance Audits</h1>
           <p className="text-xs text-muted-foreground mt-0.5">Audit cycles, physical verification tracking, and compliance logs.</p>
         </div>
-        <button 
-          onClick={() => setIsAddModalOpen(true)}
-          className="px-3.5 py-2 bg-primary hover:bg-primary-hover text-primary-foreground font-bold rounded-lg text-xs transition-all shadow-sm flex items-center gap-1.5 self-start md:self-auto"
-        >
-          <Plus className="h-4 w-4" /> Create Audit Cycle
-        </button>
+        {(user?.role === 'ADMIN' || user?.role === 'ASSET_MANAGER') && (
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="px-3.5 py-2 bg-primary hover:bg-primary-hover text-primary-foreground font-bold rounded-lg text-xs transition-all shadow-sm flex items-center gap-1.5 self-start md:self-auto"
+          >
+            <Plus className="h-4 w-4" /> Create Audit Cycle
+          </button>
+        )}
       </div>
 
       {/* Audits Card Wrapper */}
@@ -103,12 +107,14 @@ export const AuditsPage: React.FC = () => {
                   }`}>
                     {audit.status === 'COMPLETED' ? 'Completed' : 'In Progress'}
                   </span>
-                  <button 
-                    onClick={() => handleDeleteAudit(audit.id)}
-                    className="text-muted-foreground hover:text-red-500 p-0.5 rounded hover:bg-secondary transition-all"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
+                  {user?.role === 'ADMIN' && (
+                    <button 
+                      onClick={() => handleDeleteAudit(audit.id)}
+                      className="text-muted-foreground hover:text-red-500 p-0.5 rounded hover:bg-secondary transition-all"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  )}
                 </div>
               </div>
               
@@ -131,18 +137,22 @@ export const AuditsPage: React.FC = () => {
               {/* Action Trigger */}
               <div className="flex gap-2 pt-1">
                 {audit.status === 'IN_PROGRESS' ? (
-                  <>
-                    <button 
-                      onClick={() => handleCompleteAudit(audit.id)}
-                      className="flex-1 py-1.5 bg-secondary hover:bg-secondary-foreground hover:text-secondary border border-border rounded text-[10px] font-bold transition-all"
-                    >
-                      Mark Complete
-                    </button>
-                    <button className="flex-1 py-1.5 bg-primary hover:bg-primary-hover text-white rounded text-[10px] font-bold transition-all flex items-center justify-center gap-1">
-                      <span>Resume Scan</span>
-                      <ArrowRight className="h-3 w-3" />
-                    </button>
-                  </>
+                  (user?.role === 'ADMIN' || user?.role === 'ASSET_MANAGER') ? (
+                    <>
+                      <button 
+                        onClick={() => handleCompleteAudit(audit.id)}
+                        className="flex-1 py-1.5 bg-secondary hover:bg-secondary-foreground hover:text-secondary border border-border rounded text-[10px] font-bold transition-all"
+                      >
+                        Mark Complete
+                      </button>
+                      <button className="flex-1 py-1.5 bg-primary hover:bg-primary-hover text-white rounded text-[10px] font-bold transition-all flex items-center justify-center gap-1">
+                        <span>Resume Scan</span>
+                        <ArrowRight className="h-3 w-3" />
+                      </button>
+                    </>
+                  ) : (
+                    <span className="text-[10px] text-muted-foreground font-semibold px-2 py-1 text-center w-full bg-secondary/30 rounded">Verification in Progress</span>
+                  )
                 ) : (
                   <button className="w-full py-1.5 bg-secondary border border-border hover:bg-secondary-foreground hover:text-secondary rounded text-[10px] font-bold transition-all flex items-center justify-center gap-1">
                     <Award className="h-3.5 w-3.5 text-emerald-500" /> View Compliance Certificate

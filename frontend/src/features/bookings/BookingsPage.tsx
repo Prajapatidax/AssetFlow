@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { CalendarDays, Plus, Clock, Search, MapPin, X, User, CheckCircle2 } from 'lucide-react';
+import { CalendarDays, Plus, Clock, Search, MapPin, X, User, CheckCircle2, Check, Ban } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface BookingDemo {
   id: string;
@@ -11,13 +12,22 @@ interface BookingDemo {
 }
 
 const INITIAL_BOOKINGS: BookingDemo[] = [
-  { id: '1', resource: 'Conference Room A', timeSlot: 'Today, 2:00 PM - 3:30 PM', status: 'CONFIRMED', user: 'Sunita Rao' },
+  { id: '1', resource: 'Conference Room A', timeSlot: 'Today, 2:00 PM - 3:30 PM', status: 'PENDING', user: 'Sunita Rao' },
   { id: '2', resource: 'Test Lab Rack #3', timeSlot: 'July 14, 9:00 AM - 5:00 PM', status: 'CONFIRMED', user: 'Amit Singh' },
 ];
 
 export const BookingsPage: React.FC = () => {
+  const { user } = useAuth();
   const [bookings, setBookings] = useState<BookingDemo[]>(INITIAL_BOOKINGS);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  const handleApprove = (id: string) => {
+    setBookings(bookings.map(b => b.id === id ? { ...b, status: 'CONFIRMED' } : b));
+  };
+
+  const handleReject = (id: string) => {
+    setBookings(bookings.map(b => b.id === id ? { ...b, status: 'CANCELLED' } : b));
+  };
   
   // Form state
   const [resource, setResource] = useState('Conference Room A');
@@ -104,6 +114,35 @@ export const BookingsPage: React.FC = () => {
                   <span>Booked by <strong className="text-foreground">{booking.user}</strong></span>
                 </div>
                 {getStatusBadge(booking.status)}
+
+                {booking.status === 'PENDING' && (user?.role === 'ADMIN' || user?.role === 'DEPARTMENT_HEAD') && (
+                  <div className="flex gap-1">
+                    <button 
+                      onClick={() => handleApprove(booking.id)}
+                      className="p-1 bg-emerald-500/10 text-emerald-600 rounded hover:bg-emerald-500/20 transition-colors"
+                      title="Approve Booking"
+                    >
+                      <Check className="h-3.5 w-3.5" />
+                    </button>
+                    <button 
+                      onClick={() => handleReject(booking.id)}
+                      className="p-1 bg-red-500/10 text-red-500 rounded hover:bg-red-500/20 transition-colors"
+                      title="Reject Booking"
+                    >
+                      <Ban className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                )}
+
+                {booking.status === 'CONFIRMED' && (user?.role === 'ADMIN' || (user?.role === 'EMPLOYEE' && booking.user === 'Sunita Rao')) && (
+                  <button 
+                    onClick={() => handleReject(booking.id)}
+                    className="p-1 bg-secondary text-muted-foreground hover:text-red-500 rounded transition-colors"
+                    title="Cancel Booking"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                )}
               </div>
             </div>
           ))}

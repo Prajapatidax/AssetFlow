@@ -1,0 +1,14 @@
+
+[
+  "Manage organizations and departments.",
+  "Manage employees.",
+  "Manage assets and asset categories.",
+  "Delete assets where deletion is allowed.",
+  "Approve or reject bookings.",
+  "Cancel any booking.",
+  "Assign maintenance tickets and approve maintenance costs.",
+  "Complete maintenance tickets as an admin when needed.",
+  "Create and start audit cycles.",
+  "Review and submit audit verifications.",
+  "Export asset reports in CSV, Excel, or PDF format."
+]

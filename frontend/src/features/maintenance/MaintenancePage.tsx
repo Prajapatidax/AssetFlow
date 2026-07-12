@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Wrench, Plus, CheckCircle, Clock, AlertTriangle, X, ShieldAlert, Tag, ArrowRight, Trash } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface TicketDemo {
   id: string;
@@ -18,6 +19,7 @@ const INITIAL_TICKETS: TicketDemo[] = [
 ];
 
 export const MaintenancePage: React.FC = () => {
+  const { user } = useAuth();
   const [tickets, setTickets] = useState<TicketDemo[]>(INITIAL_TICKETS);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -112,19 +114,23 @@ export const MaintenancePage: React.FC = () => {
                   <p className="text-[10px] text-muted-foreground mt-1 leading-relaxed">{ticket.description}</p>
                 </div>
                 <div className="flex justify-between items-center border-t border-border/40 pt-2.5">
-                  <button 
-                    onClick={() => handleDeleteTicket(ticket.id)}
-                    className="p-1 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded transition-all"
-                  >
-                    <Trash className="h-3.5 w-3.5" />
-                  </button>
-                  <button 
-                    onClick={() => handleMoveTicket(ticket.id, 'PROGRESS')}
-                    className="text-[10px] font-bold text-primary hover:text-primary-hover flex items-center gap-0.5 transition-colors"
-                  >
-                    <span>Start Work</span>
-                    <ArrowRight className="h-3 w-3" />
-                  </button>
+                  {user?.role === 'ADMIN' && (
+                    <button 
+                      onClick={() => handleDeleteTicket(ticket.id)}
+                      className="p-1 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded transition-all"
+                    >
+                      <Trash className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                  {(user?.role === 'ADMIN' || user?.role === 'ASSET_MANAGER') && (
+                    <button 
+                      onClick={() => handleMoveTicket(ticket.id, 'PROGRESS')}
+                      className="text-[10px] font-bold text-primary hover:text-primary-hover flex items-center gap-0.5 transition-colors ml-auto"
+                    >
+                      <span>Start Work</span>
+                      <ArrowRight className="h-3 w-3" />
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -160,19 +166,23 @@ export const MaintenancePage: React.FC = () => {
                   <p className="text-[10px] text-muted-foreground mt-1 leading-relaxed">{ticket.description}</p>
                 </div>
                 <div className="flex justify-between items-center border-t border-border/40 pt-2.5">
-                  <button 
-                    onClick={() => handleDeleteTicket(ticket.id)}
-                    className="p-1 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded transition-all"
-                  >
-                    <Trash className="h-3.5 w-3.5" />
-                  </button>
-                  <button 
-                    onClick={() => handleMoveTicket(ticket.id, 'COMPLETED')}
-                    className="text-[10px] font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-0.5 transition-colors"
-                  >
-                    <span>Complete</span>
-                    <ArrowRight className="h-3 w-3" />
-                  </button>
+                  {user?.role === 'ADMIN' && (
+                    <button 
+                      onClick={() => handleDeleteTicket(ticket.id)}
+                      className="p-1 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded transition-all"
+                    >
+                      <Trash className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                  {(user?.role === 'ADMIN' || user?.role === 'ASSET_MANAGER') && (
+                    <button 
+                      onClick={() => handleMoveTicket(ticket.id, 'COMPLETED')}
+                      className="text-[10px] font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-0.5 transition-colors ml-auto"
+                    >
+                      <span>Complete</span>
+                      <ArrowRight className="h-3 w-3" />
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -208,13 +218,15 @@ export const MaintenancePage: React.FC = () => {
                   <p className="text-[10px] text-muted-foreground mt-1 leading-relaxed">{ticket.description}</p>
                 </div>
                 <div className="flex justify-between items-center border-t border-border/40 pt-2.5">
-                  <button 
-                    onClick={() => handleDeleteTicket(ticket.id)}
-                    className="p-1 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded transition-all"
-                  >
-                    <Trash className="h-3.5 w-3.5" />
-                  </button>
-                  <span className="text-[9px] font-bold text-emerald-600 bg-emerald-500/10 px-1.5 py-0.5 rounded">Resolved</span>
+                  {user?.role === 'ADMIN' && (
+                    <button 
+                      onClick={() => handleDeleteTicket(ticket.id)}
+                      className="p-1 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded transition-all"
+                    >
+                      <Trash className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                  <span className="text-[9px] font-bold text-emerald-600 bg-emerald-500/10 px-1.5 py-0.5 rounded ml-auto">Resolved</span>
                 </div>
               </div>
             ))}

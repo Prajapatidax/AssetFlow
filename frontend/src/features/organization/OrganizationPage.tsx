@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Building2, Plus, ArrowRight, X, Folder, FolderPlus, Compass, Link2, Globe, MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface DepartmentDemo {
   id: string;
@@ -17,6 +18,7 @@ const INITIAL_DEPARTMENTS: DepartmentDemo[] = [
 ];
 
 export const OrganizationPage: React.FC = () => {
+  const { user } = useAuth();
   const [departments, setDepartments] = useState<DepartmentDemo[]>(INITIAL_DEPARTMENTS);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -76,12 +78,14 @@ export const OrganizationPage: React.FC = () => {
           <h1 className="text-xl font-extrabold tracking-tight text-foreground">Organization & Hierarchy</h1>
           <p className="text-xs text-muted-foreground mt-0.5">Structure offices, define nested departments, and manage structural units.</p>
         </div>
-        <button 
-          onClick={() => setIsAddModalOpen(true)}
-          className="px-3.5 py-2 bg-primary hover:bg-primary-hover text-primary-foreground font-bold rounded-lg text-xs transition-all shadow-sm flex items-center gap-1.5 self-start md:self-auto"
-        >
-          <Plus className="h-4 w-4" /> Add Department
-        </button>
+        {user?.role === 'ADMIN' && (
+          <button 
+            onClick={() => setIsAddModalOpen(true)}
+            className="px-3.5 py-2 bg-primary hover:bg-primary-hover text-primary-foreground font-bold rounded-lg text-xs transition-all shadow-sm flex items-center gap-1.5 self-start md:self-auto"
+          >
+            <Plus className="h-4 w-4" /> Add Department
+          </button>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
