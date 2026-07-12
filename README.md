@@ -41,7 +41,7 @@ AssetFlow is a production-ready, highly scalable, and modular ERP system designe
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/AssetFlow.git
+   git clone https://github.com/prajapatidax/AssetFlow.git
    cd AssetFlow
    ```
 2. Copy environmental variables:
