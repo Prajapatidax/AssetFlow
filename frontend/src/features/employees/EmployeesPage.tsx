@@ -12,9 +12,9 @@ interface EmployeeDemo {
 }
 
 const INITIAL_EMPLOYEES: EmployeeDemo[] = [
-  { id: '1', name: 'John Doe', email: 'john@example.com', role: 'ADMIN', code: 'EMP-01', designation: 'General Administrator' },
-  { id: '2', name: 'Jane Smith', email: 'jane@example.com', role: 'ASSET_MANAGER', code: 'EMP-02', designation: 'Operations Manager' },
-  { id: '3', name: 'Bob Johnson', email: 'bob@example.com', role: 'DEPARTMENT_HEAD', code: 'EMP-03', designation: 'Engineering Lead' },
+  { id: '1', name: 'Aarav Sharma', email: 'aarav@example.com', role: 'ADMIN', code: 'EMP-01', designation: 'General Administrator' },
+  { id: '2', name: 'Priya Patel', email: 'priya@example.com', role: 'ASSET_MANAGER', code: 'EMP-02', designation: 'Operations Manager' },
+  { id: '3', name: 'Rajesh Kumar', email: 'rajesh@example.com', role: 'DEPARTMENT_HEAD', code: 'EMP-03', designation: 'Engineering Lead' },
 ];
 
 export const EmployeesPage: React.FC = () => {
@@ -173,7 +173,7 @@ export const EmployeesPage: React.FC = () => {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Alice Cooper"
+                    placeholder="e.g. Rohan Joshi"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full bg-secondary/50 border border-border focus:border-primary rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/10 transition-all font-semibold"

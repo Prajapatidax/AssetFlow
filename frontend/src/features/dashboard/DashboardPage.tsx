@@ -289,7 +289,7 @@ export const DashboardPage: React.FC = () => {
                 <Clock className="h-3 w-3" /> Today, 09:40 AM
               </div>
               <p className="font-bold mt-0.5 text-foreground">Asset Assigned</p>
-              <p className="text-muted-foreground text-[10px] mt-0.5">MacBook Pro 16" (AST-2026-001) assigned to Sarah Jenkins.</p>
+              <p className="text-muted-foreground text-[10px] mt-0.5">MacBook Pro 16" (AST-2026-001) assigned to Ananya Mehta.</p>
             </div>
             <div className="relative">
               <div className="absolute -left-[21px] top-1 h-2.5 w-2.5 bg-emerald-500 rounded-full border border-card"></div>

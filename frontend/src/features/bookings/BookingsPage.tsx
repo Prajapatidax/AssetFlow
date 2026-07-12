@@ -11,8 +11,8 @@ interface BookingDemo {
 }
 
 const INITIAL_BOOKINGS: BookingDemo[] = [
-  { id: '1', resource: 'Conference Room A', timeSlot: 'Today, 2:00 PM - 3:30 PM', status: 'CONFIRMED', user: 'Jane Doe' },
-  { id: '2', resource: 'Test Lab Rack #3', timeSlot: 'July 14, 9:00 AM - 5:00 PM', status: 'CONFIRMED', user: 'Alex Chen' },
+  { id: '1', resource: 'Conference Room A', timeSlot: 'Today, 2:00 PM - 3:30 PM', status: 'CONFIRMED', user: 'Sunita Rao' },
+  { id: '2', resource: 'Test Lab Rack #3', timeSlot: 'July 14, 9:00 AM - 5:00 PM', status: 'CONFIRMED', user: 'Amit Singh' },
 ];
 
 export const BookingsPage: React.FC = () => {
@@ -195,7 +195,7 @@ export const BookingsPage: React.FC = () => {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Jane Doe"
+                    placeholder="e.g. Sunita Rao"
                     value={bookedBy}
                     onChange={(e) => setBookedBy(e.target.value)}
                     className="w-full bg-secondary/50 border border-border focus:border-primary rounded-lg px-3 py-2 focus:outline-none font-semibold"
