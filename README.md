@@ -50,7 +50,7 @@ AssetFlow is a production-ready, highly scalable, and modular ERP system designe
    ```
 3. Boot the environment:
    ```bash
-   docker-compose up --build
+   docker compose up --build
    ```
 4. Access the apps:
    - **Frontend:** http://localhost:3000
