@@ -1,5 +1,10 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from apps.maintenance.views import MaintenanceTicketViewSet
+
+router = DefaultRouter()
+router.register('tickets', MaintenanceTicketViewSet, basename='ticket')
 
 urlpatterns = [
-    # Placeholder for maintenance endpoints
+    path('', include(router.urls)),
 ]

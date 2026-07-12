@@ -1,5 +1,6 @@
 from django.urls import path
+from apps.analytics.views import DashboardAnalyticsView
 
 urlpatterns = [
-    # Placeholder for analytics endpoints
+    path('dashboard/', DashboardAnalyticsView.as_view(), name='dashboard_analytics'),
 ]
